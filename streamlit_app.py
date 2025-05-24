@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Situation des rappels de paiements mensuel", layout="wide")
+st.set_page_config(page_title="Situation test rappels de paiements mensuel", layout="wide")
 
 st.title("📊 Situation des rappels de paiements mensuel")
 st.markdown("Upload your Excel file to calculate totals")
