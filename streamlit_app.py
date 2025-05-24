@@ -31,11 +31,11 @@ def main():
             
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("Total Amount Due", f"€ {total_d:,.2f}", help="Sum of Column D")
+                st.metric("Montant dû", f"€ {total_d:,.2f}", help="Sum of Column D")
             with col2:
-                st.metric("Total Collection Debt", f"€ {total_e:,.2f}", help="Sum of Column E")
+                st.metric("Dettes en recouvrement", f"€ {total_e:,.2f}", help="Sum of Column E")
             with col3:
-                st.metric("Valid Records", row_count, help="Rows with client names")
+                st.metric("Nombre de personnes", row_count, help="Rows with client names")
             
             # Show data preview
             st.subheader("Data Preview")
