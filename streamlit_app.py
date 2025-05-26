@@ -19,7 +19,7 @@ def main():
             
             # Convert to numeric
             df_clean['Montant dû'] = pd.to_numeric(df_clean['Montant dû'], errors='coerce')
-            df_clean[''Dettes en recouvrement'] = pd.to_numeric(df_clean['Dettes en recouvrement'], errors='coerce')
+            df_clean['Dettes en recouvrement'] = pd.to_numeric(df_clean['Dettes en recouvrement'], errors='coerce')
             
             # Calculate totals
             total_d = df_clean['Montant dû'].sum()
