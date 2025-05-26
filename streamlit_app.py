@@ -3,7 +3,7 @@ import pandas as pd
 
 st.set_page_config(page_title="Situation des rappel", layout="wide")
 
-st.title("📊 Situation des rappels de paiements mensuel")
+st.title("📊 Situation des rappels de paiements")
 st.markdown("Upload your Excel file to calculate totals")
 
 def main():
@@ -19,7 +19,7 @@ def main():
             
             # Convert to numeric
             df_clean['Montant dû'] = pd.to_numeric(df_clean['Montant dû'], errors='coerce')
-            df_clean['Plan de paiement en cours'] = pd.to_numeric(df_clean['Dettes en recouvrement'], errors='coerce')
+            df_clean[''Dettes en recouvrement'] = pd.to_numeric(df_clean['Dettes en recouvrement'], errors='coerce')
             
             # Calculate totals
             total_d = df_clean['Montant dû'].sum()
@@ -33,7 +33,7 @@ def main():
             with col1:
                 st.metric("Montant dû", f"€ {total_d:,.2f}", help="Sum of Column D")
             with col2:
-                st.metric("Dettes en recouvrement", f"€ {total_e:,.2f}", help="Sum of Column E")
+                st.metric("Plan de paiement en cours", f"€ {total_e:,.2f}", help="Sum of Column E")
             with col3:
                 st.metric("Nombre de personnes", row_count, help="Rows with client names")
             
