@@ -17,32 +17,45 @@ def main():
             # Clean data
             df_clean = df.dropna(subset=['Nom']).copy()  # Remove empty rows
             
-            # Convert to numeric
-            df_clean['Montant dû'] = pd.to_numeric(df_clean['Montant dû'], errors='coerce')
-            df_clean['Dettes en recouvrement'] = pd.to_numeric(df_clean['Dettes en recouvrement'], errors='coerce')
+            # Initialize metrics list
+            metrics = []
             
-            # Calculate totals
-            total_d = df_clean['Montant dû'].sum()
-            total_e = df_clean['Dettes en recouvrement'].sum()
-            row_count = len(df_clean)
+            # Process columns if they exist
+            if 'Montant dû' in df_clean.columns:
+                df_clean['Montant dû'] = pd.to_numeric(df_clean['Montant dû'], errors='coerce')
+                total_d = df_clean['Montant dû'].sum()
+                metrics.append(('Montant dû', f"€ {total_d:,.2f}", "Sum of Column D"))
+            
+            if 'Dettes en recouvrement' in df_clean.columns:
+                df_clean['Dettes en recouvrement'] = pd.to_numeric(df_clean['Dettes en recouvrement'], errors='coerce')
+                total_e = df_clean['Dettes en recouvrement'].sum()
+                metrics.append(('Plan de paiement en cours', f"€ {total_e:,.2f}", "Sum of Column E"))
+            
+            # Always show row count
+            metrics.append(('Nombre de personnes', len(df_clean), "Rows with client names"))
             
             # Display results
             st.success("✅ File processed successfully!")
             
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Montant dû", f"€ {total_d:,.2f}", help="Sum of Column D")
-            with col2:
-                st.metric("Plan de paiement en cours", f"€ {total_e:,.2f}", help="Sum of Column E")
-            with col3:
-                st.metric("Nombre de personnes", row_count, help="Rows with client names")
+            # Create dynamic columns
+            num_cols = len(metrics)
+            cols = st.columns(num_cols)
+            for i, (label, value, help_text) in enumerate(metrics):
+                with cols[i]:
+                    st.metric(label, value, help=help_text)
             
-            # Show data preview
+            # Show data preview with conditional formatting
             st.subheader("Data Preview")
-            st.dataframe(df_clean.style.format({
-                'Montant dû': '€ {:.2f}',
-                'Dettes en recouvrement': '€ {:.2f}'
-            }), height=400)
+            format_dict = {}
+            if 'Montant dû' in df_clean.columns:
+                format_dict['Montant dû'] = '€ {:.2f}'
+            if 'Dettes en recouvrement' in df_clean.columns:
+                format_dict['Dettes en recouvrement'] = '€ {:.2f}'
+            
+            if format_dict:
+                st.dataframe(df_clean.style.format(format_dict), height=400)
+            else:
+                st.dataframe(df_clean, height=400)
 
         except Exception as e:
             st.error(f"Error: {str(e)}")
